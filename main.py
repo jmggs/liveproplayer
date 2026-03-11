@@ -11,7 +11,7 @@ import soundfile as sf
 import sounddevice as sd
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QPushButton, QVBoxLayout, QWidget, QLabel, QHBoxLayout, QCheckBox, QSizePolicy, QAction, QAbstractItemView, QTableWidget, QTableWidgetItem, QHeaderView, QMessageBox, QInputDialog
-from PyQt5.QtCore import Qt, pyqtSignal, QStandardPaths
+from PyQt5.QtCore import Qt, pyqtSignal, QStandardPaths, QTimer
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor, QKeySequence, QIcon
 
 
@@ -78,7 +78,7 @@ class AudioPlayer(QMainWindow):
         return os.path.join(base_dir, filename)
 
     def apply_app_icon(self):
-        for candidate in ('liveproplayer.png', 'liveproplayer_logo.png'):
+        for candidate in ('liveproplayer.ico', 'liveproplayer.png', 'liveproplayer_logo.png'):
             icon_path = self.resource_path(candidate)
             if os.path.exists(icon_path):
                 self.setWindowIcon(QIcon(icon_path))
@@ -1035,6 +1035,7 @@ class AudioPlayer(QMainWindow):
         self.playback_start_sample = 0
         self.busy_count = 0
         self.duration_cache = {}
+        self.startup_layout_fixed = False
         self.is_reordering_playlist = False
         self.output_device = None
         self.remote_enabled = False
@@ -1240,6 +1241,8 @@ class AudioPlayer(QMainWindow):
         self.playlist_widget.cellDoubleClicked.connect(self.select_track)
         self.setup_shortcuts()
         self.sync_waveform_width_with_vu()
+        # Run once after first layout pass so startup sizes and rendering match.
+        QTimer.singleShot(0, self.refresh_top_bar_layout)
         self.update_transport_button_state('stopped')
         self.update_playlist_total_display()
 
@@ -1340,12 +1343,10 @@ class AudioPlayer(QMainWindow):
                 finally:
                     self.set_busy(False)
             else:
-                print("No files selected - creating demo audio")
-                self.create_demo_audio()
+                print("No files selected")
         except Exception as e:
             print(f"Error loading files: {e}")
-            print("Creating demo audio as fallback")
-            self.create_demo_audio()
+            QMessageBox.warning(self, "Add Files", f"Could not load selected files:\n{e}")
 
     def cache_audio_info(self, file_path, idx):
         """Cache waveform, duration, and VU info for file."""
@@ -1910,6 +1911,17 @@ class AudioPlayer(QMainWindow):
         # Update VU meter on resize for responsiveness
         self.show_vu_meter_stereo(self.current_vu_left, self.current_vu_right)
         self.sync_waveform_width_with_vu()
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        # First paint can happen before final widget sizes settle.
+        if not self.startup_layout_fixed:
+            QTimer.singleShot(0, self.refresh_top_bar_layout)
+            self.startup_layout_fixed = True
+
+    def refresh_top_bar_layout(self):
+        self.sync_waveform_width_with_vu()
+        self.show_vu_meter_stereo(self.current_vu_left, self.current_vu_right)
 
     def sync_waveform_width_with_vu(self):
         if hasattr(self, 'right_track_container') and hasattr(self, 'waveform_right_panel'):

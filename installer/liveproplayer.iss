@@ -20,6 +20,7 @@ Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 ArchitecturesInstallIn64BitMode=x64compatible
+SetupIconFile=..\liveproplayer.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

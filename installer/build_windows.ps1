@@ -32,7 +32,7 @@ if (-not $innoCompiler) {
 if (Test-Path ".\\build") { Remove-Item ".\\build" -Recurse -Force }
 if (Test-Path ".\\dist") { Remove-Item ".\\dist" -Recurse -Force }
 
-python -m PyInstaller --noconfirm --clean --windowed --name LiveProPlayer --add-data "liveproplayer.png;." --add-data "liveproplayer_logo.png;." main.py
+python -m PyInstaller --noconfirm --clean --windowed --name LiveProPlayer --icon "liveproplayer.ico" --add-data "liveproplayer_logo.png;." main.py
 
 & $innoCompiler "/DMyAppVersion=$Version" ".\\installer\\liveproplayer.iss"
 

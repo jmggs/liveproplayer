@@ -11,7 +11,7 @@ import soundfile as sf
 import sounddevice as sd
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QPushButton, QVBoxLayout, QWidget, QLabel, QHBoxLayout, QCheckBox, QSizePolicy, QAction, QAbstractItemView, QTableWidget, QTableWidgetItem, QHeaderView, QMessageBox, QInputDialog
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal, QStandardPaths
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor, QKeySequence
 
 
@@ -72,6 +72,21 @@ class RemoteControlHTTPServer(ThreadingHTTPServer):
 
 class AudioPlayer(QMainWindow):
     remote_command_requested = pyqtSignal(str)
+
+    def resolve_sidecar_dir(self):
+        # Use per-user writable app data for installed builds (Program Files is read-only).
+        base_dir = QStandardPaths.writableLocation(QStandardPaths.AppDataLocation)
+        if not base_dir:
+            base_dir = os.path.join(os.path.expanduser('~'), '.liveproplayer')
+
+        target_dir = os.path.join(base_dir, 'cache')
+        try:
+            os.makedirs(target_dir, exist_ok=True)
+            return target_dir
+        except Exception:
+            fallback = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.livepro_cache')
+            os.makedirs(fallback, exist_ok=True)
+            return fallback
 
     def sidecar_key(self, file_path):
         raw = file_path.encode('utf-8', errors='ignore')
@@ -1015,8 +1030,7 @@ class AudioPlayer(QMainWindow):
         self.remote_port = 8000
         self.remote_server = None
         self.remote_server_thread = None
-        self.sidecar_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.livepro_cache')
-        os.makedirs(self.sidecar_dir, exist_ok=True)
+        self.sidecar_dir = self.resolve_sidecar_dir()
         self.app_settings_path = os.path.join(self.sidecar_dir, 'app_settings.json')
         self.load_app_settings()
         self.recent_state_path = os.path.join(self.sidecar_dir, 'recent_items.json')

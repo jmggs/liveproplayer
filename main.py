@@ -12,7 +12,7 @@ import sounddevice as sd
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QPushButton, QVBoxLayout, QWidget, QLabel, QHBoxLayout, QCheckBox, QSizePolicy, QAction, QAbstractItemView, QTableWidget, QTableWidgetItem, QHeaderView, QMessageBox, QInputDialog
 from PyQt5.QtCore import Qt, pyqtSignal, QStandardPaths
-from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor, QKeySequence
+from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor, QKeySequence, QIcon
 
 
 class ClickableWaveformLabel(QLabel):
@@ -72,6 +72,17 @@ class RemoteControlHTTPServer(ThreadingHTTPServer):
 
 class AudioPlayer(QMainWindow):
     remote_command_requested = pyqtSignal(str)
+
+    def resource_path(self, filename):
+        base_dir = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+        return os.path.join(base_dir, filename)
+
+    def apply_app_icon(self):
+        for candidate in ('liveproplayer.png', 'liveproplayer_logo.png'):
+            icon_path = self.resource_path(candidate)
+            if os.path.exists(icon_path):
+                self.setWindowIcon(QIcon(icon_path))
+                return
 
     def resolve_sidecar_dir(self):
         # Use per-user writable app data for installed builds (Program Files is read-only).
@@ -1038,6 +1049,7 @@ class AudioPlayer(QMainWindow):
         self.load_recent_items()
     def __init__(self):
         super().__init__()
+        self.apply_app_icon()
         self.setWindowTitle("Live Pro Player")
         self.setGeometry(100, 100, 1280, 820)
         self.setMinimumSize(1100, 720)

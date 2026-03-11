@@ -21,6 +21,7 @@ Thumbs.db
 *.wav
 *.flac
 *.mp3
+*.psd
 
 # Build artifacts
 build/

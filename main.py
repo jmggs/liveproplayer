@@ -933,6 +933,7 @@ class AudioPlayer(QMainWindow):
             self.output_device = None
             self.save_app_settings()
             print("Audio interface set to System Default")
+            self.restart_output_stream_at_current_position()
             return
 
         for device_id, label in output_devices:
@@ -940,7 +941,54 @@ class AudioPlayer(QMainWindow):
                 self.output_device = device_id
                 self.save_app_settings()
                 print(f"Audio interface set to: {label}")
+                self.restart_output_stream_at_current_position()
                 break
+
+    def resolve_output_device_for_stream(self, samplerate, data):
+        if self.output_device is None:
+            return None
+
+        channels = 1 if data.ndim == 1 else int(data.shape[1])
+        try:
+            sd.check_output_settings(
+                device=int(self.output_device),
+                samplerate=int(samplerate),
+                channels=channels,
+            )
+            return int(self.output_device)
+        except Exception as e:
+            print(f"Selected output device is not available ({self.output_device}): {e}")
+            self.output_device = None
+            self.save_app_settings()
+            QMessageBox.warning(
+                self,
+                "Audio Interface",
+                "Selected output device is unavailable for this stream.\nUsing System Default instead.",
+            )
+            return None
+
+    def restart_output_stream_at_current_position(self):
+        if not self.vu_playing or self.vu_data is None or self.vu_samplerate is None:
+            return
+
+        if self.vu_start_time is not None:
+            current_pos = min(len(self.vu_data), int((time.time() - self.vu_start_time) * self.vu_samplerate))
+        else:
+            current_pos = min(len(self.vu_data), int(self.vu_pos))
+
+        self.vu_pos = current_pos
+        try:
+            sd.stop()
+            self.play_stream_realtime(self.vu_data, self.vu_samplerate, self.playback_session_id, current_pos)
+            print("Audio interface applied to current playback")
+        except Exception as e:
+            print(f"Unable to apply output device during playback: {e}")
+            self.playback_end_mode = 'paused'
+            self.vu_playing = False
+            self.vu_timer.stop()
+            self.vu_start_time = None
+            self.update_transport_button_state('paused')
+            QMessageBox.warning(self, "Audio Interface", f"Unable to switch output device:\n{e}")
 
     def transport_button_style(self, bg_color, text_color, border_color):
         return (
@@ -1595,11 +1643,21 @@ class AudioPlayer(QMainWindow):
         self.update_playlist_total_display()
         
         print("Starting audio playback...")
-        self.play_stream_realtime(data, samplerate, self.playback_session_id, resume_sample)
+        try:
+            self.play_stream_realtime(data, samplerate, self.playback_session_id, resume_sample)
+        except Exception as e:
+            self.vu_playing = False
+            self.vu_timer.stop()
+            self.vu_start_time = None
+            self.update_transport_button_state('stopped')
+            self.apply_playing_row_highlight()
+            QMessageBox.warning(self, "Playback Error", f"Unable to start audio playback:\n{e}")
+            print(f"Playback start failed: {e}")
 
     def play_stream_realtime(self, data, samplerate, session_id, start_sample=0):
+        device = self.resolve_output_device_for_stream(samplerate, data)
         self.vu_start_time = time.time() - (start_sample / samplerate)
-        sd.play(data[start_sample:], samplerate, blocking=False, device=self.output_device)
+        sd.play(data[start_sample:], samplerate, blocking=False, device=device)
 
     def update_vu_meter(self):
         if not self.vu_playing or self.vu_data is None or self.vu_start_time is None:
@@ -1827,14 +1885,9 @@ class AudioPlayer(QMainWindow):
         self.update_playlist_total_display()
 
         if self.vu_playing:
-            self.vu_start_time = time.time() - (target_sample / self.vu_samplerate)
             try:
-                sd.play(
-                    self.vu_data[target_sample:],
-                    self.vu_samplerate,
-                    blocking=False,
-                    device=self.output_device,
-                )
+                sd.stop()
+                self.play_stream_realtime(self.vu_data, self.vu_samplerate, self.playback_session_id, target_sample)
             except Exception as e:
                 print(f"Seek playback failed: {e}")
                 self.playback_end_mode = 'paused'

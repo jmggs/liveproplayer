@@ -1,0 +1,23 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Editor settings
+.vscode/
+
+# App local cache/settings
+.livepro_cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Large or local audio assets
+*.wav
+*.flac
+*.mp3

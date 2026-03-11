@@ -21,3 +21,8 @@ Thumbs.db
 *.wav
 *.flac
 *.mp3
+
+# Build artifacts
+build/
+dist/
+*.spec

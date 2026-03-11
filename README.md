@@ -215,3 +215,46 @@ git push origin --tags
 - `v0.1.0`: base player + playlist + waveform + VU
 - `v0.2.0`: settings, recent files, UI improvements
 - `v0.3.0`: HTTP remote control + configurable remote port
+
+## Windows Installer (.exe)
+
+This project includes an installer pipeline in the `installer/` folder.
+
+### Prerequisites
+
+- Python environment with dependencies installed
+- PyInstaller
+- Inno Setup 6
+
+Install PyInstaller:
+
+```bash
+pip install pyinstaller
+```
+
+### Build installer
+
+From the project root, run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\installer\build_windows.ps1 -Version 0.3.1
+```
+
+Generated outputs:
+
+- App bundle: `dist/LiveProPlayer/`
+- Installer: `dist/installer/LiveProPlayer-setup-v0.3.1.exe`
+
+### Manual build (optional)
+
+If you prefer manual steps:
+
+```bash
+pyinstaller --noconfirm --clean --windowed --name LiveProPlayer main.py
+```
+
+Then compile the Inno Setup script:
+
+```powershell
+iscc /DMyAppVersion=0.3.1 .\installer\liveproplayer.iss
+```

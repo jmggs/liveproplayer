@@ -10,7 +10,7 @@ import numpy as np
 import soundfile as sf
 import sounddevice as sd
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QPushButton, QVBoxLayout, QWidget, QLabel, QHBoxLayout, QSlider, QCheckBox, QSizePolicy, QAction, QAbstractItemView, QTableWidget, QTableWidgetItem, QHeaderView, QMessageBox, QInputDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QPushButton, QVBoxLayout, QWidget, QLabel, QHBoxLayout, QCheckBox, QSizePolicy, QAction, QAbstractItemView, QTableWidget, QTableWidgetItem, QHeaderView, QMessageBox, QInputDialog
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor, QKeySequence
 
@@ -1801,7 +1801,18 @@ class AudioPlayer(QMainWindow):
 
         if self.vu_playing:
             self.vu_start_time = time.time() - (target_sample / self.vu_samplerate)
-            sd.play(self.vu_data[target_sample:], self.vu_samplerate, blocking=False)
+            try:
+                sd.play(
+                    self.vu_data[target_sample:],
+                    self.vu_samplerate,
+                    blocking=False,
+                    device=self.output_device,
+                )
+            except Exception as e:
+                print(f"Seek playback failed: {e}")
+                self.playback_end_mode = 'paused'
+                self.vu_playing = False
+                self.vu_timer.stop()
         else:
             # Keep stopped/paused state, but allow Play to resume from clicked position.
             self.playback_end_mode = 'paused'
@@ -1849,7 +1860,7 @@ class AudioPlayer(QMainWindow):
             msg_box.setWindowTitle("Playback Active")
             msg_box.setText(
                 "Music is playing!\n"
-                "Do you want to lose your job and ruin your career?\n\n"
+                "Close the app and stop playback?\n\n"
                 "Stop and Close"
             )
             stop_and_close_btn = msg_box.addButton("Stop and Close", QMessageBox.DestructiveRole)

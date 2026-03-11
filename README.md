@@ -3,7 +3,7 @@
 A desktop app for Windows, Mac, and Linux to play sound files with playlist support, VU meter, waveform visualization, and silence removal options.
 For now only Windows, Mac and Linux in future.
 
-<img width="572" height="286" alt="{ECEA559A-9990-49C7-901B-6D293CC75C5D}" src="https://github.com/user-attachments/assets/c255ead0-ed01-4406-ab2a-4bab3e30062f" />
+<img width="672" height="576" alt="{ECEA559A-9990-49C7-901B-6D293CC75C5D}" src="https://github.com/user-attachments/assets/c255ead0-ed01-4406-ab2a-4bab3e30062f" />
 
 ## Features
 - Play/pause/stop sound files

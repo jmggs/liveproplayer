@@ -16,6 +16,7 @@ For now only Windows, Mac and Linux in future.
 - **PERFORMANCE**: Optimized waveform cursor updates (10x less frequent) for smooth playback
 - **SYNC**: Real-time audio position tracking for accurate VU meter and time display
 - Drag and Drop not permitted for security
+<img width="772" height="476" alt="{ECEA559A-9990-49C7-901B-6D293CC75C5D}" src="https://github.com/user-attachments/assets/c255ead0-ed01-4406-ab2a-4bab3e30062f" />
 
 ## Requirements
 - Python 3.6+

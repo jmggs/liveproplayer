@@ -1,9 +1,6 @@
-# Live Pro Player
+# Cross-Platform Audio Player
 
 A desktop app for Windows, Mac, and Linux to play sound files with playlist support, VU meter, waveform visualization, and silence removal options.
-For now only Windows, Mac and Linux in future.
-
-<img width="672" height="476" alt="{ECEA559A-9990-49C7-901B-6D293CC75C5D}" src="https://github.com/user-attachments/assets/c255ead0-ed01-4406-ab2a-4bab3e30062f" />
 
 ## Features
 - Play/pause/stop sound files
@@ -17,7 +14,6 @@ For now only Windows, Mac and Linux in future.
 - **NEW**: Robust error handling with debug messages
 - **PERFORMANCE**: Optimized waveform cursor updates (10x less frequent) for smooth playback
 - **SYNC**: Real-time audio position tracking for accurate VU meter and time display
-- Drag and Drop not permitted for security
 
 ## Requirements
 - Python 3.6+
@@ -241,13 +237,13 @@ pip install pyinstaller
 From the project root, run:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\installer\build_windows.ps1 -Version 0.3.1
+powershell -ExecutionPolicy Bypass -File .\installer\build_windows.ps1 -Version 0.3.7
 ```
 
 Generated outputs:
 
 - App bundle: `dist/LiveProPlayer/`
-- Installer: `dist/installer/LiveProPlayer-setup-v0.3.1.exe`
+- Installer: `dist/installer/LiveProPlayer-setup-v0.3.7.exe`
 
 ### Manual build (optional)
 
@@ -260,5 +256,5 @@ pyinstaller --noconfirm --clean --windowed --name LiveProPlayer main.py
 Then compile the Inno Setup script:
 
 ```powershell
-iscc /DMyAppVersion=0.3.1 .\installer\liveproplayer.iss
+iscc /DMyAppVersion=0.3.7 .\installer\liveproplayer.iss
 ```

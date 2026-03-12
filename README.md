@@ -1,6 +1,9 @@
-# Cross-Platform Audio Player
+# Live Pro Player
 
-A desktop app for Windows, Mac, and Linux to play sound files with playlist support, VU meter, waveform visualization, and silence removal options.
+A desktop app for Windows, Mac, and Linux (in future) to play sound files with playlist support, VU meter, waveform visualization, and silence removal options.
+
+
+<img width="1283" height="850" alt="Screenshot 2026-03-12 at 11 10 21" src="https://github.com/user-attachments/assets/41971feb-da69-4087-8a7c-844792047d8e" />
 
 ## Features
 - Play/pause/stop sound files
@@ -14,6 +17,7 @@ A desktop app for Windows, Mac, and Linux to play sound files with playlist supp
 - **NEW**: Robust error handling with debug messages
 - **PERFORMANCE**: Optimized waveform cursor updates (10x less frequent) for smooth playback
 - **SYNC**: Real-time audio position tracking for accurate VU meter and time display
+- No drag and drop by design to avoid acidental errors
 
 ## Requirements
 - Python 3.6+

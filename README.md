@@ -1,6 +1,6 @@
 # Cross-Platform Audio Player
 
-A desktop app for Windows, Mac, and Linux to play sound files with playlist support, VU meter, waveform visualization, and silence removal options.
+A desktop app for Windows, Mac, and Linux to play sound files with playlist support, VU meter, and waveform visualization.
 
 ## Features
 - Play/pause/stop sound files
@@ -8,9 +8,7 @@ A desktop app for Windows, Mac, and Linux to play sound files with playlist supp
 - Stereo VU meter with AES/EBU compliant color scheme
 - Waveform visualization with black background and play position indicator
 - Large countdown timer in upper right corner (hh:mm:ss format for long tracks)
-- Remove silence at beginning/end of tracks
 - Dark theme interface
-- **NEW**: Automatic demo audio generation when file loading fails
 - **NEW**: Robust error handling with debug messages
 - **PERFORMANCE**: Optimized waveform cursor updates (10x less frequent) for smooth playback
 - **SYNC**: Real-time audio position tracking for accurate VU meter and time display
@@ -24,6 +22,49 @@ A desktop app for Windows, Mac, and Linux to play sound files with playlist supp
 - Matplotlib
 
 ## Installation
+## Build and Usage Instructions
+
+### Windows
+1. Instale Python 3.x e dependências:
+   ```powershell
+   pip install -r requirements.txt
+   ```
+2. Execute:
+   ```powershell
+   python main.py
+   ```
+3. Para criar o instalador:
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\installer\build_windows.ps1 -Version 0.3.9
+   ```
+
+### Linux
+1. Instale Python 3.x e dependências:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Execute:
+   ```bash
+   python main.py
+   ```
+3. Se precisar, exporte variável DISPLAY:
+   ```bash
+   export DISPLAY=:0
+   ```
+
+### MacOS
+1. Instale Python 3.x e dependências:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Execute:
+   ```bash
+   python main.py
+   ```
+3. Se precisar, exporte variável DISPLAY:
+   ```bash
+   export DISPLAY=:0
+   ```
 
 1. Install Python dependencies:
 ```bash
@@ -105,11 +146,10 @@ python main.py
 - MP3 (requires additional codecs on some systems)
 
 ## Controls
-- **Add Files**: Load audio files into playlist
-- **Play**: Start playback of selected track
-- **Pause**: Pause current playback
-- **Stop**: Stop playback and reset position
-- **Remove Silence**: Trim silence from start/end of tracks
+**Add Files**: Load audio files into playlist
+**Play**: Start playback of selected track
+**Pause**: Pause current playback
+**Stop**: Stop playback and reset position
 
 ## Tech Stack
 - Python 3.x
@@ -131,7 +171,6 @@ python main.py
 - Implement main UI
 - Add playlist functionality
 - Integrate VU meter and waveform
-- Add silence removal option
 
 ## Git Versioning Workflow
 
@@ -216,45 +255,24 @@ git push origin --tags
 - `v0.2.0`: settings, recent files, UI improvements
 - `v0.3.0`: HTTP remote control + configurable remote port
 
-## Windows Installer (.exe)
+## Release v0.3.9
 
-This project includes an installer pipeline in the `installer/` folder.
+### Downloads
+- **Windows Installer:** `dist/installer/LiveProPlayer-setup-v0.3.9.exe`
+- **Source code:** (adicione o zip/tar.gz do código fonte manualmente)
 
-### Prerequisites
-
-- Python environment with dependencies installed
-- PyInstaller
-- Inno Setup 6
-
-Install PyInstaller:
-
-```bash
-pip install pyinstaller
-```
-
-### Build installer
-
-From the project root, run:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\installer\build_windows.ps1 -Version 0.3.7
-```
-
-Generated outputs:
-
-- App bundle: `dist/LiveProPlayer/`
-- Installer: `dist/installer/LiveProPlayer-setup-v0.3.7.exe`
-
-### Manual build (optional)
-
-If you prefer manual steps:
-
-```bash
-pyinstaller --noconfirm --clean --windowed --name LiveProPlayer main.py
-```
-
-Then compile the Inno Setup script:
-
-```powershell
-iscc /DMyAppVersion=0.3.7 .\installer\liveproplayer.iss
-```
+### Como gerar o instalador manualmente
+1. Instale as dependências Python:
+   ```powershell
+   pip install -r requirements.txt
+   pip install pyinstaller
+   ```
+2. Gere o executável:
+   ```powershell
+   python -m PyInstaller --noconfirm --clean --windowed --name LiveProPlayer --icon "liveproplayer.ico" --add-data "liveproplayer_logo.png;." main.py
+   ```
+3. Compile o instalador (Inno Setup):
+   ```powershell
+   & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=0.3.9 .\installer\liveproplayer.iss
+   ```
+4. O instalador será gerado em `dist/installer/LiveProPlayer-setup-v0.3.9.exe`

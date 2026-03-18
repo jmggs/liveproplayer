@@ -50,8 +50,6 @@ class AudioPlayer(QMainWindow):
         self.stop_button.clicked.connect(self.stop_audio)
         main_layout.addLayout(controls_layout)
 
-        self.silence_checkbox = QCheckBox("Remove Silence (Start/End)")
-        main_layout.addWidget(self.silence_checkbox)
 
         self.waveform_label = QLabel()
         main_layout.addWidget(self.waveform_label)
@@ -97,8 +95,6 @@ class AudioPlayer(QMainWindow):
             return
         file_path = self.playlist[self.current_index]
         data, samplerate = sf.read(file_path)
-        if self.silence_checkbox.isChecked():
-            data = self.remove_silence(data)
         self.show_waveform(data, samplerate)
         self.vu_data = data
         self.vu_samplerate = samplerate
@@ -187,14 +183,6 @@ class AudioPlayer(QMainWindow):
         vu = 20 * np.log10(rms)
         return vu
 
-    def remove_silence(self, data, threshold=0.01):
-        abs_data = np.abs(data)
-        mask = abs_data > threshold
-        if not np.any(mask):
-            return data
-        start = np.argmax(mask)
-        end = len(mask) - np.argmax(mask[::-1])
-        return data[start:end]
 
     def closeEvent(self, event):
         sd.stop()

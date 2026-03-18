@@ -1,0 +1,6 @@
+Release v0.3.9
+
+- Windows installer: dist/installer/LiveProPlayer-setup-v0.3.9.exe
+- Source code: todo (adicione o zip/tar.gz do código fonte manualmente)
+
+Inclui todas as funcionalidades e correções descritas no README.

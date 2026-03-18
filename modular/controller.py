@@ -55,7 +55,7 @@ class AudioPlayer(
         if self.current_index != row or self.current_file_path != self.playlist[row]:
             self.select_track(row, 0)
         else:
-            self.play_audio(remove_silence_enabled=self.silence_checkbox.isChecked())
+            self.play_audio()
         self.state = PlayerState.PLAYING
 
     def pause(self):
@@ -130,6 +130,10 @@ class AudioPlayer(
             row = self.playlist_widget.currentRow()
         if row < 0 or row >= len(self.playlist):
             return
+
+        # Se não está a tocar, mete em play
+        if self.state != PlayerState.PLAYING:
+            self.play()
 
         if self.current_index != row or self.current_file_path != self.playlist[row] or self.vu_data is None:
             self.update_preview_for_row(row, set_active_track=True)

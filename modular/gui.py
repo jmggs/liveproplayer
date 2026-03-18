@@ -56,10 +56,13 @@ class GuiMixin:
 
     def apply_app_icon(self):
         for candidate in ('liveproplayer.ico', 'liveproplayer.png', 'liveproplayer_logo.png'):
-            icon_path = self.resource_path(candidate)
-            if os.path.exists(icon_path):
-                self.setWindowIcon(QIcon(icon_path))
-                return
+                try:
+                    icon_path = self.resource_path(candidate)
+                    if os.path.exists(icon_path):
+                        self.setWindowIcon(QIcon(icon_path))
+                        break
+                except Exception as e:
+                    print(f"[Icon] Erro ao carregar {candidate}: {e}")
 
     def update_window_title(self):
         base_title = 'Live Pro Player'
@@ -211,7 +214,7 @@ class GuiMixin:
         dialog.setWindowTitle('LiveProPlayer Help')
         layout = QVBoxLayout(dialog)
 
-        version_label = QLabel('LiveProPlayer v0.3.8')
+        version_label = QLabel('LiveProPlayer v0.3.9')
         version_label.setAlignment(Qt.AlignLeft)
         layout.addWidget(version_label)
 
@@ -407,7 +410,10 @@ class GuiMixin:
         seconds = int(seconds_total % 60)
         return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
-    def show_vu_meter_stereo(self, vu_left, vu_right):
+    def show_vu_meter_stereo(self, vu_left, vu_right, force=False):
+        # Só atualiza se mudou, exceto se for forçado (ex: inicialização)
+        if not force and getattr(self, 'current_vu_left', None) == vu_left and getattr(self, 'current_vu_right', None) == vu_right:
+            return
         self.current_vu_left = vu_left
         self.current_vu_right = vu_right
         min_db = -60
@@ -542,8 +548,6 @@ class GuiMixin:
         options_layout.setContentsMargins(0, 0, 0, 0)
         options_layout.setSpacing(16)
 
-        self.silence_checkbox = QCheckBox('Remove Silence (Start/End)')
-        options_layout.addWidget(self.silence_checkbox)
 
         self.continue_checkbox = QCheckBox('Single')
         self.continue_checkbox.setChecked(False)
@@ -610,7 +614,7 @@ class GuiMixin:
         top_bar_layout.addWidget(self.right_track_container, 0)
         main_layout.addLayout(top_bar_layout)
 
-        self.show_vu_meter_stereo(-60, -60)
+        # Não desenha o VU aqui, deixa para o showEvent/layout
 
         self.waveform_label = ClickableWaveformLabel()
         self.waveform_label.setFixedHeight(190)
@@ -687,6 +691,7 @@ class GuiMixin:
     def showEvent(self, event):
         super().showEvent(event)
         if not self.startup_layout_fixed:
+            QTimer.singleShot(0, lambda: self.show_vu_meter_stereo(-60, -60, force=True))
             QTimer.singleShot(0, self.refresh_top_bar_layout)
             self.startup_layout_fixed = True
 

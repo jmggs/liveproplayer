@@ -166,7 +166,6 @@ class AudioEngineMixin:
         self.load_recent_items()
         self.fade_in_ms = 0
         self.fade_out_ms = 0
-        self.remove_silence_enabled = False
 
     def cache_audio_info(self, file_path, idx):
         """Cache waveform, duration, and VU info for file."""
@@ -227,8 +226,6 @@ class AudioEngineMixin:
         return processed
 
     def play_audio(self, remove_silence_enabled=None):
-        if remove_silence_enabled is not None:
-            self.remove_silence_enabled = bool(remove_silence_enabled)
         if self.current_index == -1 and self.playlist:
             self.current_index = 0
         if self.current_index < 0 or self.current_index >= len(self.playlist):
@@ -253,9 +250,6 @@ class AudioEngineMixin:
             print(f"Error loading audio file: {e}")
             return
 
-        if self.remove_silence_enabled:
-            data = self.remove_silence(data)
-            print('Silence removal applied')
 
         data = self.apply_fades(data, samplerate)
 
@@ -421,14 +415,3 @@ class AudioEngineMixin:
 
             return vu_left, vu_right
 
-    def remove_silence(self, data, threshold=0.01):
-        abs_data = np.abs(data)
-        if abs_data.ndim == 1:
-            mask = abs_data > threshold
-        else:
-            mask = np.max(abs_data, axis=1) > threshold
-        if not np.any(mask):
-            return data
-        start = np.argmax(mask)
-        end = len(mask) - np.argmax(mask[::-1])
-        return data[start:end]

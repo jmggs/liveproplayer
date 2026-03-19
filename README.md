@@ -12,9 +12,7 @@ Current version: **v0.4.0**
 - Stereo VU meter with AES/EBU compliant color scheme
 - Waveform visualization with black background and play position indicator
 - Large countdown timer in upper right corner (hh:mm:ss format for long tracks)
-- Remove silence at beginning/end of tracks
 - Dark theme interface
-- **NEW**: Automatic demo audio generation when file loading fails
 - **NEW**: Robust error handling with debug messages
 - **PERFORMANCE**: Optimized waveform cursor updates (10x less frequent) for smooth playback
 - **SYNC**: Real-time audio position tracking for accurate VU meter and time display

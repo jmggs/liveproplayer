@@ -8,6 +8,8 @@ A Cross-Platform Audio Player, desktop app for Windows, Mac, and Linux to play s
 ## Version
 
 Current version: **v0.4.0**
+Download: 
+https://github.com/jmggs/liveproplayer/releases
 
 ## Features
 - Play/pause/stop sound files

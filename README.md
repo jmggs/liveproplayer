@@ -1,10 +1,6 @@
-# Cross-Platform Audio Player
-
-A desktop app for Windows, Mac, and Linux to play sound files with playlist support, VU meter, waveform visualization.
+# Live Pro Player
 
 Current version: **v0.4.1**
-
-# Live Pro Player
 
 A Cross-Platform Audio Player, desktop app for Windows, Mac, and Linux to play sound files with playlist support, VU meter and waveform visualization.
 

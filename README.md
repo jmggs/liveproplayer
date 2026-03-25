@@ -1,6 +1,6 @@
 # Cross-Platform Audio Player
 
-A desktop app for Windows, Mac, and Linux to play sound files with playlist support, VU meter, waveform visualization, and silence removal options.
+A desktop app for Windows, Mac, and Linux to play sound files with playlist support, VU meter, waveform visualization.
 
 Current version: **v0.4.1**
 

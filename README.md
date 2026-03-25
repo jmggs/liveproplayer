@@ -20,13 +20,10 @@ https://github.com/jmggs/liveproplayer/releases
 - Stereo VU meter with AES/EBU compliant color scheme
 - Waveform visualization with black background and play position indicator
 - Large countdown timer in upper right corner (hh:mm:ss format for long tracks)
-<<<<<<< HEAD
 - Remove silence at beginning/end of tracks
 - Dark theme interface
-- **NEW**: Automatic demo audio generation when file loading fails
 =======
 - Dark theme interface
->>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
 - **NEW**: Robust error handling with debug messages
 - **PERFORMANCE**: Optimized waveform cursor updates (10x less frequent) for smooth playback
 - **SYNC**: Real-time audio position tracking for accurate VU meter and time display

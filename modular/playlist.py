@@ -22,6 +22,7 @@ class PlaylistMixin:
 
         if hasattr(self, 'audio_cache') and file_path in self.audio_cache:
             cached = self.audio_cache[file_path]
+<<<<<<< HEAD
             prev_vu_pos = getattr(self, 'vu_pos', 0)
             self.vu_data = cached['data']
             self.vu_samplerate = cached['samplerate']
@@ -32,6 +33,12 @@ class PlaylistMixin:
             else:
                 self.vu_pos = prev_vu_pos
                 self._preserve_vu_pos = False
+=======
+            self.vu_data = cached['data']
+            self.vu_samplerate = cached['samplerate']
+            self.total_duration = cached['duration_samples']
+            self.vu_pos = 0
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
             self.waveform_label.setPixmap(cached['waveform_pixmap'])
             self.update_time_display(self.total_duration, self.total_duration, self.vu_samplerate)
             if self.vu_data is not None and len(self.vu_data) > 0:
@@ -41,11 +48,14 @@ class PlaylistMixin:
             self.show_vu_meter_stereo(vu_left, vu_right)
             self.update_playlist_total_display()
 
+<<<<<<< HEAD
             # Se veio de um seek, e seek está ativo, e não está tocando, faz play automático
             if hasattr(self, '_preserve_vu_pos') and not self._preserve_vu_pos:
                 if hasattr(self, 'seek_checkbox') and self.seek_checkbox.isChecked() and not getattr(self, 'vu_playing', False):
                     self.play_audio()
 
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
     def on_playlist_selection_changed(self):
         self.apply_playing_row_highlight()
 
@@ -205,6 +215,7 @@ class PlaylistMixin:
             self.is_reordering_playlist = False
 
     def open_playlist_xml(self):
+<<<<<<< HEAD
         if getattr(self, 'playlist', None):
             resp = QMessageBox.question(self, 'Save playlist?', 'Do you want to save the current playlist before opening another?', QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
             if resp == QMessageBox.Yes:
@@ -214,6 +225,12 @@ class PlaylistMixin:
         xml_path, _ = QFileDialog.getOpenFileName(self, 'Open Playlist', '', 'XML Files (*.xml)')
         if not xml_path:
             return
+=======
+        xml_path, _ = QFileDialog.getOpenFileName(self, 'Open Playlist', '', 'XML Files (*.xml)')
+        if not xml_path:
+            return
+
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         self.open_playlist_xml_path(xml_path)
 
     def open_playlist_xml_path(self, xml_path):
@@ -258,12 +275,15 @@ class PlaylistMixin:
             print(f"Error opening playlist XML: {e}")
 
     def new_playlist(self):
+<<<<<<< HEAD
         if getattr(self, 'playlist', None):
             resp = QMessageBox.question(self, 'Save playlist?', 'Do you want to save the current playlist before creating a new one?', QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
             if resp == QMessageBox.Yes:
                 self.save_playlist_xml()
             elif resp == QMessageBox.Cancel:
                 return
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         self.stop_audio()
         self.playlist = []
         self.current_index = -1
@@ -324,8 +344,11 @@ class PlaylistMixin:
     def toggle_edit_mode(self, enabled):
         self.up_button.setVisible(enabled)
         self.down_button.setVisible(enabled)
+<<<<<<< HEAD
         if hasattr(self, 'delete_button'):
             self.delete_button.setVisible(enabled)
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         self.edit_button.setText('Done' if enabled else 'Edit')
 
     def move_selected_track(self, offset):
@@ -361,7 +384,11 @@ class PlaylistMixin:
                 self,
                 'Select Audio Files',
                 default_open_dir,
+<<<<<<< HEAD
                 'Audio Files (*.wav *.flac *.mp3 *.aiff *.aif)',
+=======
+                'Audio Files (*.wav *.flac *.mp3)',
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
             )
             if files:
                 self.playlist.extend(files)

@@ -49,11 +49,14 @@ class PlaylistTable(QTableWidget):
 
 
 class GuiMixin:
+<<<<<<< HEAD
     def on_delete_selected_track(self):
         row = self.playlist_widget.currentRow()
         if 0 <= row < len(self.playlist):
             del self.playlist[row]
             self.refresh_playlist_widget(select_index=min(row, len(self.playlist)-1) if self.playlist else None)
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
     def resource_path(self, filename):
         package_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         base_dir = getattr(sys, '_MEIPASS', package_root)
@@ -94,11 +97,14 @@ class GuiMixin:
         )
 
     def setup_shortcuts(self):
+<<<<<<< HEAD
         # Atalho para tecla N: Next
         self.shortcut_next = QAction(self)
         self.shortcut_next.setShortcut(QKeySequence(Qt.Key_N))
         self.shortcut_next.triggered.connect(self.on_next_requested)
         self.addAction(self.shortcut_next)
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         self.shortcut_toggle_play_pause = QAction(self)
         self.shortcut_toggle_play_pause.setShortcut(QKeySequence(Qt.Key_Space))
         self.shortcut_toggle_play_pause.triggered.connect(self.on_toggle_play_pause_requested)
@@ -220,7 +226,11 @@ class GuiMixin:
         dialog.setWindowTitle('LiveProPlayer Help')
         layout = QVBoxLayout(dialog)
 
+<<<<<<< HEAD
         version_label = QLabel('LiveProPlayer v0.4.1')
+=======
+        version_label = QLabel('LiveProPlayer v0.4.0')
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         version_label.setAlignment(Qt.AlignLeft)
         layout.addWidget(version_label)
 
@@ -235,7 +245,10 @@ class GuiMixin:
             '&nbsp;&nbsp;Space: Play/Pause<br>'
             '&nbsp;&nbsp;Enter/Return: Play selected track<br>'
             '&nbsp;&nbsp;C: Cue (rewind to start without playing)<br>'
+<<<<<<< HEAD
             '&nbsp;&nbsp;N: Next track<br>'
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
             '&nbsp;&nbsp;Up/Down: Move selection in playlist<br>'
         )
         shortcuts.setAlignment(Qt.AlignLeft)
@@ -243,7 +256,11 @@ class GuiMixin:
 
         endpoints = QLabel(
             'HTTP Endpoints:<br>'
+<<<<<<< HEAD
             '&nbsp;&nbsp;/play, /pause, /stop, /next, /cue, /up, /down<br><br>'
+=======
+            '&nbsp;&nbsp;/play, /pause, /stop, /next, /cue, /up, /down<br>'
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
             'Example: http://&lt;ip&gt;:8000/cue<br>'
         )
         endpoints.setAlignment(Qt.AlignLeft)
@@ -296,6 +313,7 @@ class GuiMixin:
         self.play_button.setStyleSheet(self.transport_button_style(*selected['play']))
         self.pause_button.setStyleSheet(self.transport_button_style(*selected['pause']))
         self.stop_button.setStyleSheet(self.transport_button_style(*selected['stop']))
+<<<<<<< HEAD
         # Cue: só acende quando pressionado
         if hasattr(self, 'cue_button'):
             cue_normal = 'font-size: 24px; min-width: 60px; min-height: 60px; background-color: #4d2a0a; color: #cccccc; border: 2px solid #332006; border-radius: 0px;'
@@ -307,6 +325,8 @@ class GuiMixin:
                 self.cue_button.setStyleSheet(cue_normal)
             self.cue_button.pressed.connect(cue_press)
             self.cue_button.released.connect(cue_release)
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
 
     def render_waveform_pixmap(self, data, samplerate):
         width = 1200
@@ -433,8 +453,11 @@ class GuiMixin:
         self.current_vu_right = vu_right
         min_db = -60
         max_db = 0
+<<<<<<< HEAD
         if not hasattr(self, 'vu_label') or self.vu_label is None:
             return
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         width = max(200, self.vu_label.width())
         height = max(60, self.vu_label.height())
         pixmap = QPixmap(width, height)
@@ -548,6 +571,7 @@ class GuiMixin:
         self.playlist_widget.itemSelectionChanged.connect(self.on_playlist_selection_changed)
         main_layout.addWidget(self.playlist_widget)
 
+<<<<<<< HEAD
 
         controls_layout = QHBoxLayout()
         self.play_button = QPushButton('Play')
@@ -568,16 +592,27 @@ class GuiMixin:
         self.cue_pause_layout.addSpacing(16)
         self.cue_pause_layout.addWidget(self.pause_button)
         self.cue_pause_widget.setLayout(self.cue_pause_layout)
+=======
+        controls_layout = QHBoxLayout()
+        self.play_button = QPushButton('Play')
+        self.pause_button = QPushButton('Pause')
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         self.stop_button = QPushButton('Stop')
         self.next_button = QPushButton('Next')
         self.next_button.setStyleSheet('font-size: 24px; min-width: 120px; min-height: 60px; background-color: #444; color: white; border: 2px solid #222;')
         controls_layout.addWidget(self.play_button)
+<<<<<<< HEAD
         controls_layout.addWidget(self.cue_pause_widget)
         controls_layout.addWidget(self.stop_button)
         controls_layout.addWidget(self.next_button)
         controls_layout.setSpacing(16)
         self.cue_button.clicked.connect(self.on_rewind_to_start_requested)
         self.pause_button.clicked.connect(self.on_pause_requested)
+=======
+        controls_layout.addWidget(self.pause_button)
+        controls_layout.addWidget(self.stop_button)
+        controls_layout.addWidget(self.next_button)
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         self.stop_button.clicked.connect(self.on_stop_requested)
         main_layout.addLayout(controls_layout)
 
@@ -609,11 +644,15 @@ class GuiMixin:
         self.down_button.setVisible(False)
         options_layout.addWidget(self.up_button)
         options_layout.addWidget(self.down_button)
+<<<<<<< HEAD
         self.delete_button = QPushButton('Delete')
         self.delete_button.setStyleSheet('font-size: 13px; min-width: 60px; min-height: 28px; background-color: #a22; color: white; border: 1px solid #222;')
         self.delete_button.setVisible(False)
         self.delete_button.clicked.connect(self.on_delete_selected_track)
         options_layout.addWidget(self.delete_button)
+=======
+
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         options_layout.addStretch(1)
         main_layout.addLayout(options_layout)
 
@@ -714,8 +753,12 @@ class GuiMixin:
         self.up_button.clicked.connect(lambda: self.on_move_selected_track_requested(-1))
         self.down_button.clicked.connect(lambda: self.on_move_selected_track_requested(1))
         self.play_button.clicked.connect(self.on_play_requested)
+<<<<<<< HEAD
         # Atalhos já configurados em setup_shortcuts()
         # self.pause_button e self.cue_button já conectados acima
+=======
+        self.pause_button.clicked.connect(self.on_pause_requested)
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         self.playlist_widget.cellDoubleClicked.connect(self.on_track_activated)
         self.setup_shortcuts()
         self.sync_waveform_width_with_vu()
@@ -728,8 +771,12 @@ class GuiMixin:
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
+<<<<<<< HEAD
         if hasattr(self, 'vu_label') and self.vu_label is not None:
             self.show_vu_meter_stereo(self.current_vu_left, self.current_vu_right)
+=======
+        self.show_vu_meter_stereo(self.current_vu_left, self.current_vu_right)
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         self.sync_waveform_width_with_vu()
 
     def showEvent(self, event):

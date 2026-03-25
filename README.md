@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Cross-Platform Audio Player
 
 A desktop app for Windows, Mac, and Linux to play sound files with playlist support, VU meter, waveform visualization, and silence removal options.
@@ -5,6 +6,20 @@ A desktop app for Windows, Mac, and Linux to play sound files with playlist supp
 ## Version
 
 Current version: **v0.4.1**
+=======
+# Live Pro Player
+
+A Cross-Platform Audio Player, desktop app for Windows, Mac, and Linux to play sound files with playlist support, VU meter and waveform visualization.
+
+<img width="640" height="437" alt="{0F8EFC22-A30C-4683-B880-681A3E9A4B09}" src="https://github.com/user-attachments/assets/36b8d53a-c397-4c39-8610-ad65eb5f7f76" />
+
+
+## Version and Download
+
+Current version: **v0.4.0**
+Download: 
+https://github.com/jmggs/liveproplayer/releases
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
 
 ## Features
 - Play/pause/stop sound files
@@ -12,9 +27,13 @@ Current version: **v0.4.1**
 - Stereo VU meter with AES/EBU compliant color scheme
 - Waveform visualization with black background and play position indicator
 - Large countdown timer in upper right corner (hh:mm:ss format for long tracks)
+<<<<<<< HEAD
 - Remove silence at beginning/end of tracks
 - Dark theme interface
 - **NEW**: Automatic demo audio generation when file loading fails
+=======
+- Dark theme interface
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
 - **NEW**: Robust error handling with debug messages
 - **PERFORMANCE**: Optimized waveform cursor updates (10x less frequent) for smooth playback
 - **SYNC**: Real-time audio position tracking for accurate VU meter and time display

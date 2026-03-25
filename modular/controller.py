@@ -55,9 +55,12 @@ class AudioPlayer(
         if self.current_index != row or self.current_file_path != self.playlist[row]:
             self.select_track(row, 0)
         else:
+<<<<<<< HEAD
             # Se cue_pos estiver definida, restaurar dela
             if hasattr(self, 'cue_pos') and self.cue_pos is not None:
                 self.vu_pos = self.cue_pos
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
             self.play_audio()
         self.state = PlayerState.PLAYING
 
@@ -122,7 +125,10 @@ class AudioPlayer(
         self.select_track(row, column)
 
     def on_waveform_clicked_requested(self, x, y):
+<<<<<<< HEAD
         # O print de debug deve vir após a definição de target_sample
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         if not hasattr(self, 'seek_checkbox') or not self.seek_checkbox.isChecked():
             return
 
@@ -135,8 +141,17 @@ class AudioPlayer(
         if row < 0 or row >= len(self.playlist):
             return
 
+<<<<<<< HEAD
 
         # Se não há áudio carregado, força carregamento
+=======
+        if self.current_index != row or self.current_file_path != self.playlist[row] or self.vu_data is None:
+            self.update_preview_for_row(row, set_active_track=True)
+
+        if self.vu_data is None or self.vu_samplerate is None or self.total_duration <= 0:
+            return
+
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         label_width = max(1, self.waveform_label.width())
         left = self.waveform_left_padding
         right = self.waveform_right_padding
@@ -144,6 +159,7 @@ class AudioPlayer(
         click_x = max(left, min(left + usable_width - 1, int(x)))
         ratio = (click_x - left) / max(1, usable_width - 1)
         target_sample = int(ratio * max(0, self.total_duration - 1))
+<<<<<<< HEAD
 
         # ...debug removido...
 
@@ -163,6 +179,9 @@ class AudioPlayer(
             self.update_waveform_cursor(self.vu_pos)
         if not self.vu_playing:
             self.play_audio()
+=======
+        self.seek_to_sample(target_sample)
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
 
     def on_edit_mode_toggled(self, enabled):
         self.toggle_edit_mode(enabled)

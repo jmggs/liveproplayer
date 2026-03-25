@@ -114,6 +114,7 @@ class AudioEngineMixin:
             self.playback_end_mode = 'natural'
             return
 
+<<<<<<< HEAD
 
         continue_enabled = self.should_continue_playback()
         if continue_enabled:
@@ -122,6 +123,11 @@ class AudioEngineMixin:
             else:
                 # Loop para o início
                 self.current_index = 0
+=======
+        continue_enabled = self.should_continue_playback()
+        if continue_enabled and self.current_index + 1 < len(self.playlist):
+            self.current_index += 1
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
             self.update_preview_for_row(self.current_index, set_active_track=True)
             self.play_audio()
             return
@@ -232,7 +238,10 @@ class AudioEngineMixin:
         return processed
 
     def play_audio(self, remove_silence_enabled=None):
+<<<<<<< HEAD
         # ...debug removido...
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         # ...removed silence feature...
         if self.current_index == -1 and self.playlist:
             self.current_index = 0
@@ -265,8 +274,18 @@ class AudioEngineMixin:
         if not hasattr(self, 'audio_cache') or file_path not in self.audio_cache:
             self.cache_audio_info(file_path, 0)
 
+<<<<<<< HEAD
         resume_sample = self.vu_pos if 0 <= self.vu_pos < len(data) else 0
         # ...debug removido...
+=======
+        resume_sample = 0
+        if (
+            self.playback_end_mode == 'paused'
+            and self.current_file_path == file_path
+            and 0 < self.vu_pos < len(data)
+        ):
+            resume_sample = self.vu_pos
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
 
         self.total_duration = len(data)
         self.vu_data = data
@@ -289,7 +308,11 @@ class AudioEngineMixin:
         self.apply_playing_row_highlight()
         self.update_playlist_total_display()
 
+<<<<<<< HEAD
         # ...debug removido...
+=======
+        print('Starting audio playback...')
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         try:
             self.play_stream_realtime(data, samplerate, self.playback_session_id, resume_sample)
         except Exception as e:
@@ -303,10 +326,14 @@ class AudioEngineMixin:
     def play_stream_realtime(self, data, samplerate, session_id, start_sample=0):
         device = self.resolve_output_device_for_stream(samplerate, data)
         self.vu_start_time = time.time() - (start_sample / samplerate)
+<<<<<<< HEAD
         try:
             sd.play(data[start_sample:], samplerate, blocking=False, device=device)
         except Exception as e:
             print(f"[DEBUG] sd.play exception: {e}")
+=======
+        sd.play(data[start_sample:], samplerate, blocking=False, device=device)
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
 
     def update_vu_meter(self):
         if not self.vu_playing or self.vu_data is None or self.vu_start_time is None:
@@ -351,8 +378,11 @@ class AudioEngineMixin:
         self.vu_playing = False
         self.vu_timer.stop()
         self.vu_start_time = None
+<<<<<<< HEAD
         if hasattr(self, 'show_vu_meter_stereo'):
             self.show_vu_meter_stereo(-60, -60)
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         self.update_transport_button_state('paused')
         self.apply_playing_row_highlight()
         self.update_playlist_total_display()
@@ -369,8 +399,11 @@ class AudioEngineMixin:
         self.vu_start_time = None
         self.vu_pos = 0
         self.current_file_path = None
+<<<<<<< HEAD
         if hasattr(self, 'show_vu_meter_stereo'):
             self.show_vu_meter_stereo(-60, -60)
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         self.update_transport_button_state('stopped')
         self.apply_playing_row_highlight()
         self.update_playlist_total_display()
@@ -402,7 +435,10 @@ class AudioEngineMixin:
                 self.vu_timer.stop()
         else:
             self.playback_end_mode = 'paused'
+<<<<<<< HEAD
             self.vu_playing = False
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
 
     def should_continue_playback(self):
         return False

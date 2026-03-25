@@ -134,7 +134,11 @@ class SettingsMixin:
                     path = item.get('path')
                     if kind in ('audio', 'playlist') and isinstance(path, str) and path.strip():
                         cleaned.append({'kind': kind, 'path': path})
+<<<<<<< HEAD
                 self.recent_items = cleaned[:8]
+=======
+                self.recent_items = cleaned[:3]
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
             else:
                 self.recent_items = []
         except Exception:
@@ -144,7 +148,11 @@ class SettingsMixin:
         try:
             os.makedirs(os.path.dirname(self.recent_state_path), exist_ok=True)
             with open(self.recent_state_path, 'w', encoding='utf-8') as f:
+<<<<<<< HEAD
                 json.dump(self.recent_items[:8], f)
+=======
+                json.dump(self.recent_items[:3], f)
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         except Exception as e:
             print(f"Failed to save recent items: {e}")
 
@@ -190,15 +198,22 @@ class SettingsMixin:
         if not isinstance(path, str) or not path:
             return
 
+<<<<<<< HEAD
         if kind not in ('audio', 'playlist'):
             return
 
+=======
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         self.recent_items = [
             item for item in self.recent_items
             if not (item.get('kind') == kind and item.get('path') == path)
         ]
         self.recent_items.insert(0, {'kind': kind, 'path': path})
+<<<<<<< HEAD
         self.recent_items = self.recent_items[:8]
+=======
+        self.recent_items = self.recent_items[:3]
+>>>>>>> 9dc01fbab386c8956dd7937a71fdf5a4adfafd5d
         self.save_recent_items()
         self.refresh_recent_menu()
 

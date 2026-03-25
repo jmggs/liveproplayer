@@ -8,7 +8,8 @@ Current version: **v0.4.1**
 
 A Cross-Platform Audio Player, desktop app for Windows, Mac, and Linux to play sound files with playlist support, VU meter and waveform visualization.
 
-<img width="640" height="437" alt="{0F8EFC22-A30C-4683-B880-681A3E9A4B09}" src="https://github.com/user-attachments/assets/36b8d53a-c397-4c39-8610-ad65eb5f7f76" />
+<img width="1283" height="849" alt="Screenshot 2026-03-25 at 17 21 05" src="https://github.com/user-attachments/assets/3045fe4b-b3ef-4184-a7ee-57d06d0f729b" />
+
 
 ## Version and Download
 Download: 
@@ -22,11 +23,11 @@ https://github.com/jmggs/liveproplayer/releases
 - Large countdown timer in upper right corner (hh:mm:ss format for long tracks)
 - Remove silence at beginning/end of tracks
 - Dark theme interface
-=======
-- Dark theme interface
-- **NEW**: Robust error handling with debug messages
-- **PERFORMANCE**: Optimized waveform cursor updates (10x less frequent) for smooth playback
-- **SYNC**: Real-time audio position tracking for accurate VU meter and time display
+- Added cue button for precise playback control
+- Playlist now shows warning messages for invalid or missing files
+- Seek and play from waveform click (with seek checkbox enabled)
+- New delete file (remove track) button in playlist UI
+- AIFF audio file support added
 
 ## Requirements
 - Python 3.6+

@@ -10,8 +10,7 @@ from PyQt5.QtGui import QKeyEvent
 class RemoteControlRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         command = self.path.split('?', 1)[0].strip('/').lower()
-        allowed = {'play', 'pause', 'stop', 'next', 'previous'}
-
+        allowed = {'play', 'pause', 'stop', 'next', 'previous', 'cue'}
 
         if command in allowed:
             self.server.player.remote_command_requested.emit(command)
@@ -20,16 +19,6 @@ class RemoteControlRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({'ok': True, 'command': command}).encode('utf-8'))
             return
-
-        if command == 'cue':
-            # Aciona o mesmo comportamento do atalho C
-            if hasattr(self.server.player, 'on_rewind_to_start_requested'):
-                self.server.player.on_rewind_to_start_requested()
-                self.send_response(200)
-                self.send_header('Content-Type', 'application/json; charset=utf-8')
-                self.end_headers()
-                self.wfile.write(json.dumps({'ok': True, 'command': 'cue'}).encode('utf-8'))
-                return
 
         if command == 'up':
             # Simula evento de tecla seta para cima
@@ -176,3 +165,6 @@ class ApiMixin:
             self.on_next_requested()
         elif command == 'previous':
             self.play_previous_track()
+        elif command == 'cue':
+            # Runs safely on the main thread via the queued signal connection
+            self.on_rewind_to_start_requested()

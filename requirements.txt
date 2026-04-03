@@ -1,0 +1,7 @@
+pyqt5>=5.15,<6.0
+numpy>=1.26,<3.0
+soundfile>=0.12,<1.0
+sounddevice>=0.4,<1.0
+
+# Build — only needed to generate the exe
+# pyinstaller>=6.0
